@@ -53,11 +53,11 @@ if (scrollCue) {
   });
 }
 
-// Background grid toggle (footer), persisted across visits.
+// Background grid toggle (footer), persisted across visits. Defaults to on.
 const gridOverlay = document.getElementById("gridOverlay");
 const gridToggle = document.getElementById("gridToggle");
 if (gridOverlay && gridToggle) {
-  const gridStored = localStorage.getItem("showGrid") === "true";
+  const gridStored = localStorage.getItem("showGrid") !== "false";
   gridToggle.checked = gridStored;
   gridOverlay.classList.toggle("grid-visible", gridStored);
 
