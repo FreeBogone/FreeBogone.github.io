@@ -13,12 +13,12 @@
 </head>
 <body>
 
-  <!-- Background layers: gradient mesh blobs + grain texture + grid -->
+  <!-- Background layers: parallax gradient mesh blobs + grain texture -->
   <div class="bg-layer" aria-hidden="true">
-    <div class="blob blob-a"></div>
-    <div class="blob blob-b"></div>
-    <div class="blob blob-c"></div>
-    <div class="grid-overlay"></div>
+    <div class="parallax-layer" data-speed="0.06"><div class="blob blob-a"></div></div>
+    <div class="parallax-layer" data-speed="-0.1"><div class="blob blob-b"></div></div>
+    <div class="parallax-layer" data-speed="0.16"><div class="blob blob-c"></div></div>
+    <div class="parallax-layer" data-speed="-0.05"><div class="blob blob-d"></div></div>
     <div class="grain"></div>
   </div>
 

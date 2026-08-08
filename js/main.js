@@ -15,6 +15,36 @@ const revealObserver = new IntersectionObserver(
 
 revealEls.forEach((el) => revealObserver.observe(el));
 
+// Parallax: each background layer drifts vertically at its own speed on scroll.
+const parallaxLayers = document.querySelectorAll(".parallax-layer");
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (parallaxLayers.length && !prefersReducedMotion) {
+  let ticking = false;
+
+  const applyParallax = () => {
+    const scrollY = window.scrollY;
+    parallaxLayers.forEach((layer) => {
+      const speed = parseFloat(layer.dataset.speed) || 0;
+      layer.style.transform = `translate3d(0, ${scrollY * speed}px, 0)`;
+    });
+    ticking = false;
+  };
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        requestAnimationFrame(applyParallax);
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+
+  applyParallax();
+}
+
 // Scroll cue in hero jumps to the About section.
 const scrollCue = document.getElementById("scrollCue");
 if (scrollCue) {
