@@ -53,6 +53,20 @@ if (scrollCue) {
   });
 }
 
+// Background grid toggle (footer), persisted across visits.
+const gridOverlay = document.getElementById("gridOverlay");
+const gridToggle = document.getElementById("gridToggle");
+if (gridOverlay && gridToggle) {
+  const gridStored = localStorage.getItem("showGrid") === "true";
+  gridToggle.checked = gridStored;
+  gridOverlay.classList.toggle("grid-visible", gridStored);
+
+  gridToggle.addEventListener("change", () => {
+    gridOverlay.classList.toggle("grid-visible", gridToggle.checked);
+    localStorage.setItem("showGrid", gridToggle.checked);
+  });
+}
+
 // Footer year.
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();

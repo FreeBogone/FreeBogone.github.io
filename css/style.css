@@ -3,6 +3,26 @@
    Theme: near-black base, emerald accent, glassmorphism panels
    ========================================================================== */
 
+/* Registered so keyframes can interpolate them continuously (a smooth curve)
+   instead of snapping discretely between values. Drives the hero blob-intro spiral:
+   --spiral-theta rotates the fixed center-offset vector (--dx/--dy) while
+   --spiral-decay shrinks it from 1 (fully offset, i.e. centered) to 0 (at rest). */
+@property --spiral-theta {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --spiral-decay {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+@property --spiral-scale {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
 :root {
   --bg: #020304;
   --bg-alt: #060809;
@@ -85,7 +105,15 @@ ul li::marker { color: var(--accent); }
   top: -10%;
   left: -12%;
   background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-  animation: drift-a 26s ease-in-out infinite;
+  /* Exact vector from this blob's resting center to the viewport center. */
+  --dx: 39vw;
+  --dy: calc(60vh - 23vw);
+  transform: translate(
+    calc(var(--spiral-decay) * (var(--dx) * cos(var(--spiral-theta)) - var(--dy) * sin(var(--spiral-theta)))),
+    calc(var(--spiral-decay) * (var(--dx) * sin(var(--spiral-theta)) + var(--dy) * cos(var(--spiral-theta))))
+  ) scale(var(--spiral-scale));
+  animation: emerge-a 3.2s cubic-bezier(0.19, 1, 0.22, 1) both,
+             drift-a 26s ease-in-out infinite 3.2s;
 }
 
 .blob-b {
@@ -95,7 +123,15 @@ ul li::marker { color: var(--accent); }
   right: -10%;
   background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
   opacity: 0.28;
-  animation: drift-b 32s ease-in-out infinite;
+  /* Exact vector from this blob's resting center to the viewport center. */
+  --dx: -41vw;
+  --dy: calc(19vw - 58vh);
+  transform: translate(
+    calc(var(--spiral-decay) * (var(--dx) * cos(var(--spiral-theta)) - var(--dy) * sin(var(--spiral-theta)))),
+    calc(var(--spiral-decay) * (var(--dx) * sin(var(--spiral-theta)) + var(--dy) * cos(var(--spiral-theta))))
+  ) scale(var(--spiral-scale));
+  animation: emerge-b 3.2s cubic-bezier(0.19, 1, 0.22, 1) both,
+             drift-b 32s ease-in-out infinite 3.2s;
 }
 
 .blob-c {
@@ -105,7 +141,8 @@ ul li::marker { color: var(--accent); }
   left: 55%;
   background: radial-gradient(circle, #6366f1 0%, transparent 70%);
   opacity: 0.16;
-  animation: drift-c 22s ease-in-out infinite;
+  animation: fade-in-blob 1.6s ease-out 1.8s both,
+             drift-c 22s ease-in-out infinite 1.8s;
 }
 
 .blob-d {
@@ -115,7 +152,25 @@ ul li::marker { color: var(--accent); }
   right: 8%;
   background: radial-gradient(circle, var(--accent-2) 0%, transparent 70%);
   opacity: 0.18;
-  animation: drift-d 28s ease-in-out infinite;
+  animation: fade-in-blob 1.6s ease-out 2.1s both,
+             drift-d 28s ease-in-out infinite 2.1s;
+}
+
+/* Reverse-black-hole intro: at 0% decay=1 so translate exactly equals
+   (--dx, --dy), placing each blob's center dead-center in the viewport;
+   as decay eases to 0 the vector collapses to (0,0) — its resting spot —
+   while theta spins it continuously in between, tracing one fluid spiral. */
+@keyframes emerge-a {
+  0%   { --spiral-theta: 0deg;   --spiral-decay: 1; --spiral-scale: 0.05; opacity: 0; }
+  100% { --spiral-theta: 300deg; --spiral-decay: 0; --spiral-scale: 1;    opacity: 0.35; }
+}
+@keyframes emerge-b {
+  0%   { --spiral-theta: 0deg;    --spiral-decay: 1; --spiral-scale: 0.05; opacity: 0; }
+  100% { --spiral-theta: -300deg; --spiral-decay: 0; --spiral-scale: 1;    opacity: 0.28; }
+}
+@keyframes fade-in-blob {
+  0% { opacity: 0; transform: scale(0.7); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 @keyframes drift-a {
@@ -135,10 +190,24 @@ ul li::marker { color: var(--accent); }
   50% { transform: translate(4vw, -5vh) scale(1.05); }
 }
 
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 20%, transparent 80%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.grid-overlay.grid-visible { opacity: 1; }
+
 .grain {
   position: absolute;
   inset: 0;
-  opacity: 0.09;
+  opacity: 0.16;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
 }
@@ -420,6 +489,41 @@ a.meta-item:hover { color: var(--accent); }
 .card h3 { font-size: 1.02rem; margin-bottom: 8px; }
 .card p { font-size: 0.9rem; }
 
+/* -------------------------------- projects --------------------------------- */
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card p { margin-bottom: 18px; }
+
+.project-card .pill-row { margin-top: auto; margin-bottom: 16px; }
+
+.project-links {
+  display: flex;
+  gap: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.project-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  transition: color 0.25s var(--ease);
+}
+
+.project-links a:hover { color: var(--accent); }
+
 /* -------------------------------- skills --------------------------------- */
 
 .skills-grid {
@@ -581,6 +685,54 @@ a.meta-item:hover { color: var(--accent); }
   padding: 32px 24px 48px;
   color: var(--text-faint);
   font-size: 0.82rem;
+}
+
+.grid-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.25s var(--ease);
+}
+
+.grid-toggle:hover { color: var(--text-dim); }
+
+.grid-toggle input {
+  appearance: none;
+  width: 30px;
+  height: 17px;
+  border-radius: 999px;
+  background: var(--glass-fill-strong);
+  border: 1px solid var(--glass-border);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.25s var(--ease);
+}
+
+.grid-toggle input::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  transition: transform 0.25s var(--ease), background 0.25s var(--ease);
+}
+
+.grid-toggle input:checked {
+  background: var(--accent-glow);
+  border-color: rgba(52, 211, 153, 0.4);
+}
+
+.grid-toggle input:checked::before {
+  transform: translateX(13px);
+  background: var(--accent);
 }
 
 /* ------------------------------ scroll reveal ------------------------------ */
