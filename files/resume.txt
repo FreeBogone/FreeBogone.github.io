@@ -1,0 +1,33 @@
+Bowen Truelove				          Christiana, TN | 615-956-3796 | botruelove2002@gmail.com
+Profile
+Software Engineer with a systems engineering background and experience developing reliable applications, data pipelines, APIs, and internal tools. Proficient in Python, C#, and SQL, with experience designing and supporting software used in complex, production-critical manufacturing environments. Strong problem solver who excels at understanding complex systems, designing maintainable solutions, and translating operational requirements into scalable software.
+Professional Experience
+System Engineer 2, AESC US — Smyrna, TN
+May 2025 — Present
+Develop production software, MES functionality, data pipelines, automation, and internal applications using Python, C#, .NET, React, and SQL Server.
+Designed and developed a Python-based ETL pipeline to ingest, transform, and consolidate millions of machine-generated production records into SQL Server for manufacturing analysis and KPI tracking.
+Designed and developed full-stack applications using .NET, React, and SQL Server to automate workflows, improve data visibility, and standardize operational processes.
+Built a Python automation framework with structured logging, automated email alerting, reporting, and file processing, replacing manual operational workflows.
+Own the reliability and continuous improvement of production systems, diagnosing issues across applications, databases, integrations, and infrastructure while collaborating with engineering, operations, QA, and vendors.
+System Engineer 1, AESC US — Smyrna, TN
+May 2024 — May 2025
+Supported the installation, configuration, and production startup of a new DELMIA Apriso MES platform, troubleshooting software and system issues during early production operations.
+Developed custom DELMIA Apriso functionality to automate manufacturing workflows and improve data tracking and visibility for MFG and QA teams.
+Developed internal tools and data-processing workflows using Python and SQL to reduce manual processes and improve operational efficiency.
+Investigated production issues across applications, databases, and workflows, identifying root causes and coordinating solutions with internal teams and software vendors.
+System Engineering Intern, AESC US — Smyrna, TN
+Feb 2023 — May 2024
+Provided technical support for production systems, including legacy MES troubleshooting, IPC restoration, and workstation support.
+Executed SQL-based data updates under supervision and gained hands-on experience with MES environments, manufacturing systems, and production workflows.
+Education
+Middle Tennessee State University — Murfreesboro, TN
+B.S. Computer Science, Aug 2021 — Dec 2024
+Motlow State Community College — Smyrna, TN
+A.A.S. Mechatronics, Aug 2020 — May 2021
+Technical Skills
+Languages: Python, C#, SQL, C/C++
+Backend & Web: .NET, ASP.NET Core, Entity Framework Core, React, REST APIs
+Data: Microsoft SQL Server, ETL, Data Processing, Data Transformation
+Engineering: Full-Stack Development, Automation, Internal Tooling, System Integration, Root-Cause Analysis
+Manufacturing: MES, DELMIA Apriso, Production Systems
+Tools: Git, IIS, Windows Server, Rocky Linux/Red Hat Enterprise Linux, Grafana
